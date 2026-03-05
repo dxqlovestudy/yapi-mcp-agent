@@ -31,18 +31,6 @@
 
 ## 安装
 
-### 从 PyPI 安装（推荐）
-
-```bash
-pip install yapi-mcp
-```
-
-或使用 uv：
-
-```bash
-uv pip install yapi-mcp
-```
-
 ### 从源码安装
 
 ```bash
@@ -58,6 +46,9 @@ git clone https://github.com/yourusername/yapi-mcp.git
 cd yapi-mcp
 uv pip install -e .
 ```
+
+### 从 PyPI 安装 （暂不支持）
+
 
 ## 配置
 
@@ -122,7 +113,7 @@ yapi-mcp
 }
 ```
 
-#### 使用 uvx 运行
+#### 使用 uvx 运行（暂不支持）
 
 ```json
 {
