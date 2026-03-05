@@ -31,22 +31,32 @@
 
 ## 安装
 
-### 1. 克隆或下载项目
+### 从 PyPI 安装（推荐）
 
 ```bash
-cd /path/to/yapi-mcp
-```
-
-### 2. 安装依赖
-
-```bash
-pip install -r requirements.txt
+pip install yapi-mcp
 ```
 
 或使用 uv：
 
 ```bash
-uv pip install -r requirements.txt
+uv pip install yapi-mcp
+```
+
+### 从源码安装
+
+```bash
+git clone https://github.com/yourusername/yapi-mcp.git
+cd yapi-mcp
+pip install -e .
+```
+
+或使用 uv：
+
+```bash
+git clone https://github.com/yourusername/yapi-mcp.git
+cd yapi-mcp
+uv pip install -e .
 ```
 
 ## 配置
@@ -72,19 +82,19 @@ export YAPI_PASSWORD="your-password"
 ### 使用 uv 运行（推荐）
 
 ```bash
-uv run api.py
+uv run yapi-mcp
 ```
 
-### 使用 uvx 运行
+### 使用 python -m 运行
 
 ```bash
-uvx --from /path/to/yapi-mcp yapi-mcp
+python -m yapi_mcp
 ```
 
-### 直接运行
+### 直接运行命令
 
 ```bash
-python api.py
+yapi-mcp
 ```
 
 ### 作为 MCP 服务器使用
@@ -100,7 +110,7 @@ python api.py
         "--directory",
         "/path/to/yapi-mcp",
         "run",
-        "api.py"
+        "yapi-mcp"
       ],
       "env": {
         "YAPI_BASE_URL": "https://your-yapi-server.com",
@@ -120,8 +130,6 @@ python api.py
     "yapi": {
       "command": "uvx",
       "args": [
-        "--from",
-        "/path/to/yapi-mcp",
         "yapi-mcp"
       ],
       "env": {
@@ -148,7 +156,7 @@ python api.py
   "mcpServers": {
     "yapi": {
       "command": "python",
-      "args": ["/path/to/yapi-mcp/api.py"],
+      "args": ["-m", "yapi_mcp"],
       "env": {
         "YAPI_BASE_URL": "https://your-yapi-server.com",
         "YAPI_EMAIL": "your-email@example.com",
@@ -171,7 +179,7 @@ python api.py
           "--directory",
           "/path/to/yapi-mcp",
           "run",
-          "api.py"
+          "yapi-mcp"
         ],
         "env": {
           "YAPI_BASE_URL": "https://your-yapi-server.com",
@@ -349,11 +357,19 @@ python api.py
 
 ```
 yapi-mcp/
-├── api.py              # MCP 服务器主程序
-├── pyproject.toml      # 项目配置（支持 uv/uvx）
-├── requirements.txt    # Python 依赖（兼容 pip）
-├── .gitignore         # Git 忽略文件
-└── README.md          # 本文档
+├── src/
+│   └── yapi_mcp/
+│       ├── __init__.py      # 包入口，导出主要模块
+│       ├── __main__.py      # 命令行入口
+│       ├── server.py        # MCP 服务器和工具定义
+│       ├── client.py        # YAPI 客户端类
+│       └── config.py        # 配置管理
+├── tests/
+│   ├── __init__.py
+│   └── test_config.py       # 配置测试
+├── pyproject.toml           # 项目配置
+├── .gitignore              # Git 忽略文件
+└── README.md               # 本文档
 ```
 
 ## 注意事项
