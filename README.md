@@ -1,3 +1,5 @@
+<img width="100" height="100" alt="yapi-mcp-logo" src="https://github.com/user-attachments/assets/4e3898a0-9e69-4c97-9d16-14d83a7f71a9" />
+
 # YAPI MCP Server
 
 [中文文档](README_CN.md) | English
