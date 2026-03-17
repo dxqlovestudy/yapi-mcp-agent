@@ -185,6 +185,196 @@ def run_auto_test(
     return client.run_auto_test(col_id, project_id, token, mode, email)
 
 
+# ============ 接口更新相关工具 ============
+
+
+@mcp.tool()
+def create_interface(
+    title: str,
+    catid: int,
+    path: str,
+    project_id: int | None = None,
+    method: str = "GET",
+    desc: str = "",
+    status: str = "undone",
+    req_query: list | None = None,
+    req_headers: list | None = None,
+    req_body_form: list | None = None,
+    req_params: list | None = None,
+    req_body_other: str = "",
+    res_body: str = "",
+    res_body_type: str = "json",
+    switch_notice: bool = False,
+    message: str = "",
+) -> dict[str, Any]:
+    """
+    在 YAPI 中新增接口
+
+    重要规范：
+    - res_body 中数组类型的 items 必须定义完整的 properties，不能只写 "type": "object"
+    - 如果返回数据包含 rows 字段（分页列表），必须先查找实体类获取完整字段信息
+    - 详细规范请调用 get_yapi_guidelines 工具查看
+
+    :param title: 接口标题
+    :param catid: 分类ID
+    :param path: 接口路径
+    :param project_id: 项目ID（可选，某些YAPI版本需要）
+    :param method: 请求方法，如 GET、POST、PUT、DELETE（默认为 GET）
+    :param desc: 接口描述（默认为空）
+    :param status: 接口状态，如 undone、done（默认为 undone）
+    :param req_query: 请求查询参数列表（默认为空列表）
+    :param req_headers: 请求头列表（默认包含 Content-Type）
+    :param req_body_form: 表单参数列表（默认为空列表）
+    :param req_params: 路径参数列表（默认为空列表）
+    :param req_body_other: 请求体 JSON Schema 字符串（默认为空）
+    :param res_body: 返回数据 JSON Schema 字符串（默认为空）
+    :param res_body_type: 返回数据类型，如 json、raw、xml（默认为 json）
+    :param switch_notice: 是否开启通知（默认为 False）
+    :param message: 接口通知消息（默认为空）
+    :return: 新增结果，包含接口ID
+    """
+    client = YAPIClient()
+    return client.create_interface(
+        title=title,
+        catid=catid,
+        path=path,
+        project_id=project_id,
+        method=method,
+        desc=desc,
+        status=status,
+        req_query=req_query,
+        req_headers=req_headers,
+        req_body_form=req_body_form,
+        req_params=req_params,
+        req_body_other=req_body_other,
+        res_body=res_body,
+        res_body_type=res_body_type,
+        switch_notice=switch_notice,
+        message=message,
+    )
+
+
+@mcp.tool()
+def update_interface(
+    interface_id: int,
+    title: str,
+    catid: int,
+    path: str,
+    method: str = "GET",
+    desc: str = "",
+    status: str = "undone",
+    req_query: list | None = None,
+    req_headers: list | None = None,
+    req_body_form: list | None = None,
+    req_params: list | None = None,
+    req_body_other: str = "",
+    res_body: str = "",
+    res_body_type: str = "json",
+    switch_notice: bool = False,
+    message: str = "",
+) -> dict[str, Any]:
+    """
+    更新 YAPI 接口
+
+    重要规范：
+    - res_body 中数组类型的 items 必须定义完整的 properties，不能只写 "type": "object"
+    - 如果返回数据包含 rows 字段（分页列表），必须先查找实体类获取完整字段信息
+    - 详细规范请调用 get_yapi_guidelines 工具查看
+
+    :param interface_id: 接口ID
+    :param title: 接口标题
+    :param catid: 分类ID
+    :param path: 接口路径
+    :param method: 请求方法，如 GET、POST、PUT、DELETE（默认为 GET）
+    :param desc: 接口描述（默认为空）
+    :param status: 接口状态，如 undone、done（默认为 undone）
+    :param req_query: 请求查询参数列表（默认为空列表）
+    :param req_headers: 请求头列表（默认包含 Content-Type）
+    :param req_body_form: 表单参数列表（默认为空列表）
+    :param req_params: 路径参数列表（默认为空列表）
+    :param req_body_other: 请求体 JSON Schema 字符串（默认为空）
+    :param res_body: 返回数据 JSON Schema 字符串（默认为空）
+    :param res_body_type: 返回数据类型，如 json、raw、xml（默认为 json）
+    :param switch_notice: 是否开启通知（默认为 False）
+    :param message: 接口通知消息（默认为空）
+    :return: 更新结果
+    """
+    client = YAPIClient()
+    return client.update_interface(
+        interface_id=interface_id,
+        title=title,
+        catid=catid,
+        path=path,
+        method=method,
+        desc=desc,
+        status=status,
+        req_query=req_query,
+        req_headers=req_headers,
+        req_body_form=req_body_form,
+        req_params=req_params,
+        req_body_other=req_body_other,
+        res_body=res_body,
+        res_body_type=res_body_type,
+        switch_notice=switch_notice,
+        message=message,
+    )
+
+
 def run():
     """运行 MCP 服务器"""
     mcp.run()
+
+
+# ============ MCP Resource ============
+
+YAPI_GUIDELINES = """# YAPI 接口文档创建规范
+
+## 问题
+创建 YAPI 接口文档时，如果返回数据中的 `rows` 字段（数组类型）的 `items` 只定义 `"type": "object"` 而不定义具体的 `properties`，YAPI 页面上会显示为空，无法看到返回字段结构。
+
+## 解决方案
+在创建接口文档前，必须先查找并读取相关的实体类/DTO 类，获取完整的返回字段信息，然后在 `res_body` 中定义完整的字段结构。
+
+## 流程
+1. 根据接口路径找到对应的 Controller
+2. 找到方法返回类型对应的实体类（如 `PageResponse` 中的 `rows` 对应的实体）
+3. 读取实体类，提取所有字段及其描述
+4. 在创建接口时，将实体类的字段完整定义到 `res_body` 的 `rows.items.properties` 中
+
+## 示例
+```json
+{
+  "res_body": {
+    "type": "object",
+    "properties": {
+      "ret_code": { "type": "string", "description": "返回码" },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "merch_no": { "type": "string", "description": "商户号" },
+            "merch_name": { "type": "string", "description": "商户名" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## 注意事项
+- 所有数组类型的 items 都必须定义完整的 properties
+- 字段描述应与实体类中的注释保持一致
+- 常见字段类型：string、integer、number、boolean、array、object
+"""
+
+
+@mcp.resource("yapi://guidelines")
+def get_yapi_guidelines() -> str:
+    """
+    获取 YAPI 接口文档创建规范
+
+    包含完整的接口文档创建规范和示例，帮助正确创建 YAPI 接口文档。
+    """
+    return YAPI_GUIDELINES

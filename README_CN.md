@@ -16,6 +16,8 @@
 - 获取项目的接口列表
 - 获取某个分类下的接口列表
 - 按关键字搜索接口
+- 新增接口
+- 更新接口
 
 ### 数据导入
 - 导入 Swagger/OpenAPI 数据
@@ -265,6 +267,53 @@ yapi-mcp
 - `keyword` (string): 搜索关键字
 
 **返回：** 匹配的接口列表
+
+#### 新增接口
+
+在 YAPI 中新增一个接口。
+
+**参数：**
+- `title` (string): 接口标题
+- `catid` (int): 分类ID
+- `path` (string): 接口路径
+- `method` (string, 可选): 请求方法（GET、POST、PUT、DELETE等），默认: "GET"
+- `desc` (string, 可选): 接口描述，默认: ""
+- `status` (string, 可选): 接口状态（undone、done），默认: "undone"
+- `req_query` (array, 可选): 请求查询参数列表，默认: []
+- `req_headers` (array, 可选): 请求头列表，默认: [{"name": "Content-Type"}]
+- `req_body_form` (array, 可选): 表单参数列表，默认: []
+- `req_params` (array, 可选): 路径参数列表，默认: []
+- `req_body_other` (string, 可选): 请求体 JSON Schema 字符串，默认: ""
+- `res_body` (string, 可选): 返回数据 JSON Schema 字符串，默认: ""
+- `res_body_type` (string, 可选): 返回数据类型（json、raw、xml），默认: "json"
+- `switch_notice` (bool, 可选): 是否开启通知，默认: False
+- `message` (string, 可选): 接口通知消息，默认: ""
+
+**返回：** 新增结果，包含接口ID
+
+#### 更新接口
+
+更新 YAPI 中已有的接口。
+
+**参数：**
+- `interface_id` (int): 接口ID
+- `title` (string): 接口标题
+- `catid` (int): 分类ID
+- `path` (string): 接口路径
+- `method` (string, 可选): 请求方法（GET、POST、PUT、DELETE等），默认: "GET"
+- `desc` (string, 可选): 接口描述，默认: ""
+- `status` (string, 可选): 接口状态（undone、done），默认: "undone"
+- `req_query` (array, 可选): 请求查询参数列表，默认: []
+- `req_headers` (array, 可选): 请求头列表，默认: [{"name": "Content-Type"}]
+- `req_body_form` (array, 可选): 表单参数列表，默认: []
+- `req_params` (array, 可选): 路径参数列表，默认: []
+- `req_body_other` (string, 可选): 请求体 JSON Schema 字符串，默认: ""
+- `res_body` (string, 可选): 返回数据 JSON Schema 字符串，默认: ""
+- `res_body_type` (string, 可选): 返回数据类型（json、raw、xml），默认: "json"
+- `switch_notice` (bool, 可选): 是否开启通知，默认: False
+- `message` (string, 可选): 接口通知消息，默认: ""
+
+**返回：** 更新结果
 
 ### 数据导入工具
 

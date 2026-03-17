@@ -18,6 +18,8 @@ A YAPI interface documentation query tool built with FastMCP, enabling AI assist
 - Get interface list for a project
 - Get interface list by category
 - Search interfaces by keyword
+- Create interface
+- Update interface
 
 ### Data Import
 - Import Swagger/OpenAPI data
@@ -266,6 +268,53 @@ Search for interfaces containing a keyword in a project.
 - `keyword` (string): Search keyword
 
 **Returns:** Matched interface list
+
+#### Create Interface
+
+Create a new interface in YAPI.
+
+**Parameters:**
+- `title` (string): Interface title
+- `catid` (int): Category ID
+- `path` (string): Interface path
+- `method` (string, optional): Request method (GET, POST, PUT, DELETE, etc.), default: "GET"
+- `desc` (string, optional): Interface description, default: ""
+- `status` (string, optional): Interface status (undone, done), default: "undone"
+- `req_query` (array, optional): Request query parameters list, default: []
+- `req_headers` (array, optional): Request headers list, default: [{"name": "Content-Type"}]
+- `req_body_form` (array, optional): Form parameters list, default: []
+- `req_params` (array, optional): Path parameters list, default: []
+- `req_body_other` (string, optional): Request body JSON Schema string, default: ""
+- `res_body` (string, optional): Response body JSON Schema string, default: ""
+- `res_body_type` (string, optional): Response body type (json, raw, xml), default: "json"
+- `switch_notice` (bool, optional): Enable notification, default: False
+- `message` (string, optional): Interface notification message, default: ""
+
+**Returns:** Create result, includes interface ID
+
+#### Update Interface
+
+Update an existing YAPI interface.
+
+**Parameters:**
+- `interface_id` (int): Interface ID
+- `title` (string): Interface title
+- `catid` (int): Category ID
+- `path` (string): Interface path
+- `method` (string, optional): Request method (GET, POST, PUT, DELETE, etc.), default: "GET"
+- `desc` (string, optional): Interface description, default: ""
+- `status` (string, optional): Interface status (undone, done), default: "undone"
+- `req_query` (array, optional): Request query parameters list, default: []
+- `req_headers` (array, optional): Request headers list, default: [{"name": "Content-Type"}]
+- `req_body_form` (array, optional): Form parameters list, default: []
+- `req_params` (array, optional): Path parameters list, default: []
+- `req_body_other` (string, optional): Request body JSON Schema string, default: ""
+- `res_body` (string, optional): Response body JSON Schema string, default: ""
+- `res_body_type` (string, optional): Response body type (json, raw, xml), default: "json"
+- `switch_notice` (bool, optional): Enable notification, default: False
+- `message` (string, optional): Interface notification message, default: ""
+
+**Returns:** Update result
 
 ### Data Import Tools
 

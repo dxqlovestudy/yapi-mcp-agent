@@ -375,3 +375,150 @@ class YAPIClient:
             return result["data"]
         except Exception as e:
             return {"ret_code": "400", "ret_msg": f"运行自动化测试失败: {str(e)}"}
+
+    # ============ 接口创建/更新相关 ============
+
+    def create_interface(
+        self,
+        title: str,
+        catid: int,
+        path: str,
+        project_id: int | None = None,
+        method: str = "GET",
+        desc: str = "",
+        status: str = "undone",
+        req_query: list | None = None,
+        req_headers: list | None = None,
+        req_body_form: list | None = None,
+        req_params: list | None = None,
+        req_body_other: str = "",
+        res_body: str = "",
+        res_body_type: str = "json",
+        switch_notice: bool = False,
+        message: str = "",
+    ) -> dict[str, Any]:
+        """
+        新增接口
+
+        :param title: 接口标题
+        :param catid: 分类ID
+        :param path: 接口路径
+        :param project_id: 项目ID
+        :param method: 请求方法，如 GET、POST、PUT、DELETE
+        :param desc: 接口描述
+        :param status: 接口状态，如 undone、done
+        :param req_query: 请求查询参数列表
+        :param req_headers: 请求头列表
+        :param req_body_form: 表单参数列表
+        :param req_params: 路径参数列表
+        :param req_body_other: 请求体（JSON字符串）
+        :param res_body: 返回数据（JSON字符串）
+        :param res_body_type: 返回数据类型，如 json、raw、xml
+        :param switch_notice: 是否开启通知
+        :param message: 接口通知消息
+        :return: 新增结果，包含接口ID
+        """
+        try:
+            self.guarantee_login()
+            data = {
+                "title": title,
+                "catid": str(catid),
+                "path": path,
+                "method": method.upper(),
+                "desc": desc,
+                "status": status,
+                "req_query": req_query or [],
+                "req_headers": req_headers or [{"name": "Content-Type"}],
+                "req_body_form": req_body_form or [],
+                "req_params": req_params or [],
+                "req_body_other": req_body_other,
+                "res_body": res_body,
+                "res_body_type": res_body_type,
+                "switch_notice": switch_notice,
+                "message": message,
+            }
+            if project_id is not None:
+                data["project_id"] = project_id
+
+            result = self._session.post(
+                f"{self.base_url}/api/interface/add", json=data
+            ).json()
+            _check(
+                result["errcode"] == 0,
+                f"新增接口失败: {result.get('errmsg', '未知错误')}",
+            )
+            return result["data"]
+        except Exception as e:
+            return {"ret_code": "400", "ret_msg": f"新增接口失败: {str(e)}"}
+
+    def update_interface(
+        self,
+        interface_id: int,
+        title: str,
+        catid: int,
+        path: str,
+        method: str = "GET",
+        desc: str = "",
+        status: str = "undone",
+        req_query: list | None = None,
+        req_headers: list | None = None,
+        req_body_form: list | None = None,
+        req_params: list | None = None,
+        req_body_other: str = "",
+        res_body: str = "",
+        res_body_type: str = "json",
+        switch_notice: bool = False,
+        message: str = "",
+    ) -> dict[str, Any]:
+        """
+        更新接口
+
+        :param interface_id: 接口ID
+        :param title: 接口标题
+        :param catid: 分类ID
+        :param path: 接口路径
+        :param method: 请求方法，如 GET、POST、PUT、DELETE
+        :param desc: 接口描述
+        :param status: 接口状态，如 undone、done
+        :param req_query: 请求查询参数列表
+        :param req_headers: 请求头列表
+        :param req_body_form: 表单参数列表
+        :param req_params: 路径参数列表
+        :param req_body_other: 请求体（JSON字符串）
+        :param res_body: 返回数据（JSON字符串）
+        :param res_body_type: 返回数据类型，如 json、raw、xml
+        :param switch_notice: 是否开启通知
+        :param message: 接口通知消息
+        :return: 更新结果
+        """
+        try:
+            self.guarantee_login()
+            data = {
+                "id": str(interface_id),
+                "title": title,
+                "catid": str(catid),
+                "path": path,
+                "method": method.upper(),
+                "desc": desc,
+                "status": status,
+                "req_query": req_query or [],
+                "req_headers": req_headers or [{"name": "Content-Type"}],
+                "req_body_form": req_body_form or [],
+                "req_params": req_params or [],
+                "req_body_other": req_body_other,
+                "res_body": res_body,
+                "res_body_type": res_body_type,
+                "switch_notice": switch_notice,
+                "message": message,
+            }
+
+            result = self._session.post(
+                f"{self.base_url}/api/interface/up", json=data
+            ).json()
+            _check(
+                result["errcode"] == 0,
+                f"更新接口失败: {result.get('errmsg', '未知错误')}",
+            )
+            return result["data"]
+        except Exception as e:
+            return {"ret_code": "400", "ret_msg": f"更新接口失败: {str(e)}"}
